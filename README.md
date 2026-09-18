@@ -99,6 +99,8 @@ https://zvracodes.github.io/khabardar-hazard-mapper/
 
 Repository link:
 
+https://github.com/zvracodes/khabardar-hazard-mapper
+
 ✅ Alignment with Judging Criteria
 Criterion	How Khabardar addresses it
 Problem relevance	Targets a specific, recurring, and under-addressed local hazard (open manholes, exposed wiring, monsoon flooding risk) rather than a generic civic complaint app
