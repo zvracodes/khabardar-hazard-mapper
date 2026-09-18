@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khabardar — Street Hazard Mapper for Lahore</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Work+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-database-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-storage-compat.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="tape-strip"></div>
+<div class="wrap">
+
+  <header>
+    <div class="title-block">
+      <h1>Khabardar</h1>
+      <p>Click the map to mark an open manhole, exposed wire, unmarked pit, or waterlogged street — before someone gets hurt.</p>
+      <div class="sync-badge" id="syncBadge"><span class="sync-dot"></span><span id="syncText">Checking sync…</span></div>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><div class="num" id="statTotal">0</div><div class="lbl">active hazards</div></div>
+      <div class="stat"><div class="num" id="statCritical">0</div><div class="lbl">life-threatening</div></div>
+    </div>
+  </header>
+
+  <div id="monsoonBanner"><strong>Monsoon watch:</strong> <span id="monsoonText"></span></div>
+
+  <div class="grid">
+    <div class="panel">
+      <h2>Hazard map</h2>
+      <p class="sub">Click anywhere on the real map to drop a pin at that exact GPS location, then fill in the details on the right.</p>
+      <div class="map-frame">
+        <div id="hazardMap"></div>
+      </div>
+      <div class="legend">
+        <span><i class="swatch" style="background:var(--critical)"></i> Critical — immediate danger</span>
+        <span><i class="swatch" style="background:var(--high)"></i> High — likely injury</span>
+        <span><i class="swatch" style="background:var(--medium)"></i> Medium — needs fixing</span>
+      </div>
+      <button type="button" class="use-location-btn" id="useLocationBtn">📍 Use my current location</button>
+      <div class="pending-note" id="pendingNote">Pin placed — fill in the details and submit, or cancel below.</div>
+    </div>
+
+    <div>
+      <div class="panel">
+        <h2>Mark this hazard</h2>
+        <p class="sub" id="formSub">Click the map first to place a pin.</p>
+        <form id="reportForm">
+          <div>
+            <label for="areaSelect">Nearest area</label>
+            <select id="areaSelect" required></select>
+          </div>
+          <div>
+            <label for="typeSelect">Hazard type</label>
+            <select id="typeSelect">
+              <option value="manhole">Open manhole / uncovered drain</option>
+              <option value="wire">Exposed / low-hanging wire</option>
+              <option value="pit">Unmarked construction pit</option>
+              <option value="waterlogged">Waterlogged / flooded street</option>
+              <option value="bridge">Weak footbridge or plank crossing</option>
+              <option value="other">Other hazard</option>
+            </select>
+          </div>
+          <div>
+            <label>Severity</label>
+            <div class="chip-row" id="sevChips"></div>
+          </div>
+          <div>
+            <label for="descInput">Details (optional)</label>
+            <textarea id="descInput" rows="2" maxlength="400" placeholder="e.g. Manhole cover missing since last week, right at the turn — hard to see at night"></textarea>
+          </div>
+          <div class="photo-row">
+            <button type="button" class="photo-btn" id="photoBtn">Add a photo</button>
+            <img id="photoPreview" class="photo-preview" alt="">
+            <input type="file" id="photoInput" accept="image/*" style="display:none">
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button type="submit" class="submit" id="submitBtn" disabled>Mark hazard</button>
+            <button type="button" class="cancel" id="cancelBtn" style="display:none;">Cancel pin</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="panel feed-panel">
+        <h2>Recent hazards</h2>
+        <p class="sub">Newest first.</p>
+        <div class="feed-list" id="feedList"></div>
+      </div>
+    </div>
+
+    <div class="panel rank-panel">
+      <h2>Most dangerous right now</h2>
+      <p class="sub">Sorted by severity, then how long it's been sitting there — this is the fix-it order.</p>
+      <table class="rank">
+        <thead><tr><th>Area</th><th>Hazard</th><th>Severity</th><th>Reported</th></tr></thead>
+        <tbody id="rankBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer>Built for Smart City Hackathon Lahore 2026. When Firebase is not configured, this runs in local demo mode.</footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
