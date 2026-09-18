@@ -1,11 +1,5 @@
 (function () {
-    // ============================================================
-    // FIREBASE CONFIG — paste your own project's keys here.
-    // Get these from: Firebase Console → Project Settings → General
-    // Until you paste real keys, the app runs fine in local-only demo mode.
-    // Realtime Database + Storage must both be enabled in your project
-    // for full functionality (Storage is used for hazard photos).
-    // ============================================================
+   
     var FIREBASE_CONFIG = {
         apiKey: "YOUR_API_KEY",
         authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -14,7 +8,7 @@
         storageBucket: "YOUR_PROJECT_ID.appspot.com"
     };
 
-    // Real approximate coordinates for demo areas around Lahore.
+
     var AREAS = [
         { id: 'walled', name: 'Walled City', lat: 31.5820, lng: 74.3100 },
         { id: 'gulberg', name: 'Gulberg', lat: 31.5090, lng: 74.3555 },
@@ -43,10 +37,7 @@
     var map = null;
     var markersLayer = null;
 
-    // ---- Input sanitization ----
-    // Strips any HTML tags outright and caps length, before the value is
-    // ever stored or rendered. escapeHtml() below is a second layer applied
-    // again at render time (defense in depth against XSS).
+    
     function sanitizeText(str, maxLen) {
         if (!str) return '';
         var noTags = String(str).replace(/<[^>]*>/g, '');
